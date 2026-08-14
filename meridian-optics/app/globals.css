@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-ink: #14171a;
+  --color-bone: #ede7da;
+  --color-paper: #f6f3ec;
+  --color-lens-blue: #3e5c76;
+  --color-brass: #b08d57;
+  --color-fog: #8a8f98;
+  --color-signal: #b23a2f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible keyboard focus everywhere, styled instead of suppressed */
+:focus-visible {
+  outline: 2px solid var(--color-lens-blue);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- Signature element: the pupillary-distance ruler divider ---
+   A recurring tick-mark rule used instead of a plain hairline,
+   nodding to the PD ruler on an optician's counter. */
+.pd-ruler {
+  position: relative;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-ink) 0px,
+    var(--color-ink) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+  opacity: 0.35;
+}
+
+.pd-ruler--major {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-ink) 0px,
+    var(--color-ink) 1px,
+    transparent 1px,
+    transparent 24px
+  );
+  opacity: 0.5;
+  height: 6px;
+}
+
+/* --- Signature element: acuity-chart headline ---
+   Each line shrinks like rows on a Snellen eye chart. Use sparingly,
+   only where the content is genuinely a short sequence (hero, section intros). */
+.acuity-line {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+}
+.acuity-line[data-row="1"] {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+}
+.acuity-line[data-row="2"] {
+  font-size: clamp(1.8rem, 5.5vw, 4rem);
+  opacity: 0.82;
+}
+.acuity-line[data-row="3"] {
+  font-size: clamp(1.2rem, 3.5vw, 2.5rem);
+  opacity: 0.6;
+}
+
+/* Spec label, used for frame measurements printed mono-style on product cards */
+.spec-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-fog);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-lens-blue);
+}
