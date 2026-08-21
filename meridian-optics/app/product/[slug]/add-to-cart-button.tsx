@@ -2,10 +2,18 @@
 
 import { useState } from "react";
 import { useCart } from "@/context/cart-context";
+import { useLocale } from "@/context/locale-context";
 import type { Product } from "@/db/schema";
 
-export function AddToCartButton({ product }: { product: Product }) {
+export function AddToCartButton({
+  product,
+  name,
+}: {
+  product: Product;
+  name: string;
+}) {
   const { addItem } = useCart();
+  const { dict } = useLocale();
   const [added, setAdded] = useState(false);
 
   return (
@@ -14,7 +22,7 @@ export function AddToCartButton({ product }: { product: Product }) {
         addItem({
           productId: product.id,
           slug: product.slug,
-          name: product.name,
+          name,
           priceCents: product.priceCents,
           imageUrl: product.imageUrl,
         });
@@ -23,7 +31,7 @@ export function AddToCartButton({ product }: { product: Product }) {
       }}
       className="mt-6 w-full border border-ink py-3 font-body text-sm text-ink transition-colors hover:bg-ink hover:text-paper md:w-auto md:px-8"
     >
-      {added ? "Added to cart" : "Add to cart"}
+      {added ? dict.product.added : dict.product.addToCart}
     </button>
   );
 }

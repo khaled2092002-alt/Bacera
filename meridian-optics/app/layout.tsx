@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { CartProvider } from "@/context/cart-context";
+import { LocaleProvider } from "@/context/locale-context";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { getLocale } from "@/i18n/get-locale";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,14 +17,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = getLocale();
+
   return (
-    <html lang="en">
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <body className="flex min-h-screen flex-col font-body">
-        <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </CartProvider>
+        <LocaleProvider initialLocale={locale}>
+          <CartProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+          </CartProvider>
+        </LocaleProvider>
       </body>
     </html>
   );

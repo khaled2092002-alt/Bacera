@@ -13,8 +13,10 @@ import { relations } from "drizzle-orm";
 export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 120 }).notNull(),
+  nameAr: varchar("name_ar", { length: 120 }),
   slug: varchar("slug", { length: 120 }).notNull().unique(),
   description: text("description"),
+  descriptionAr: text("description_ar"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -24,10 +26,14 @@ export const products = pgTable("products", {
     .notNull()
     .references(() => categories.id),
   name: varchar("name", { length: 160 }).notNull(),
+  nameAr: varchar("name_ar", { length: 160 }),
   slug: varchar("slug", { length: 160 }).notNull().unique(),
   description: text("description").notNull(),
+  descriptionAr: text("description_ar"),
   frameShape: varchar("frame_shape", { length: 60 }), // e.g. Round, Aviator, Wayfarer
+  frameShapeAr: varchar("frame_shape_ar", { length: 60 }),
   frameMaterial: varchar("frame_material", { length: 60 }), // e.g. Acetate, Titanium
+  frameMaterialAr: varchar("frame_material_ar", { length: 60 }),
   lensWidthMm: integer("lens_width_mm"),
   bridgeWidthMm: integer("bridge_width_mm"),
   templeLengthMm: integer("temple_length_mm"),

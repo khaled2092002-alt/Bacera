@@ -1,16 +1,32 @@
 # Meridian Optics
 
 Next.js 14 (App Router) storefront for an eyewear brand. Drizzle ORM + Postgres,
-Stripe Checkout, and a cart persisted in `localStorage`.
+Stripe Checkout, a cart persisted in `localStorage`, and a bilingual
+Arabic/English UI with full RTL support.
 
 ## Design system
 
 - **Palette** — ink `#14171A`, bone `#EDE7DA`, paper `#F6F3EC`, lens-blue `#3E5C76`,
   brass `#B08D57`, fog `#8A8F98`, signal `#B23A2F`.
-- **Type** — Fraunces (display), Inter (body), JetBrains Mono (specs/prices).
+- **Type** — Fraunces (display) / Inter (body) / JetBrains Mono (specs/prices)
+  in English; Markazi Text / IBM Plex Sans Arabic in Arabic (swapped
+  automatically via `html[lang="ar"]` in `app/globals.css`).
 - **Signature elements** — the "PD ruler" tick-mark divider (`.pd-ruler` in
   `app/globals.css`) and the acuity-chart hero (`.acuity-line`), both nodding to
   an optician's counter rather than generic e-commerce chrome.
+
+## Bilingual (AR/EN)
+
+- Toggle in the header switches the whole UI and flips `dir="rtl"`/`ltr"`
+  automatically. The choice is stored in a cookie so page loads render in
+  the right language and direction from the server, no flash of the wrong one.
+- UI strings live in `src/i18n/dictionary.ts`. Product/category content has
+  parallel Arabic columns in the database (`nameAr`, `descriptionAr`,
+  `frameShapeAr`, `frameMaterialAr` — see `src/db/schema.ts` and
+  `src/lib/localize.ts`), already filled in for the seed catalog.
+- Product photography is still placeholder: `public/products/*.svg` are
+  original line-art mockups in the brand palette (not real product photos —
+  see Notes below).
 
 ## Local setup
 
@@ -71,8 +87,14 @@ that's the only place your GitHub credentials should ever live.
 
 ## Notes
 
-- Seed images use `picsum.photos` placeholders — swap `imageUrl` in
-  `src/db/seed.ts` for real product photography before launch.
+- Product images are placeholder line-art mockups (`public/products/*.svg`),
+  not real photos. Swap `imageUrl` in `src/db/seed.ts` for real product
+  photography before launch — any local file in `/public` or remote URL
+  works (remote hosts need adding to `images.remotePatterns` in
+  `next.config.js`, same as the existing `picsum.photos` entry).
 - The checkout API route creates a Stripe Checkout Session; you'll still need
   a webhook handler (`checkout.session.completed`) to mark orders paid if you
   add an `orders` table.
+- Prices in the seed data and the checkout route are hard-coded to USD. If
+  you're selling in EGP, update `currency` in `src/db/schema.ts`/`seed.ts` and
+  the `currency: "usd"` in `app/api/checkout/route.ts`.

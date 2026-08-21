@@ -3,24 +3,24 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/cart-context";
+import { useLocale } from "@/context/locale-context";
 import { formatPrice } from "@/lib/format-price";
 
 export default function CartPage() {
   const { items, subtotalCents, setQuantity, removeItem } = useCart();
+  const { dict } = useLocale();
 
   if (items.length === 0) {
     return (
       <section className="mx-auto max-w-content px-5 py-20 text-center md:px-8">
-        <p className="eyebrow mb-3">Your cart</p>
-        <h1 className="font-display text-3xl text-ink">Nothing here yet</h1>
-        <p className="mt-3 font-body text-ink/60">
-          Frames you add will show up here.
-        </p>
+        <p className="eyebrow mb-3">{dict.cartPage.title}</p>
+        <h1 className="font-display text-3xl text-ink">{dict.cartPage.emptyTitle}</h1>
+        <p className="mt-3 font-body text-ink/60">{dict.cartPage.emptyBody}</p>
         <Link
           href="/"
           className="mt-6 inline-block border border-ink px-6 py-3 font-body text-sm hover:bg-ink hover:text-paper"
         >
-          Browse frames
+          {dict.cartPage.browse}
         </Link>
       </section>
     );
@@ -28,7 +28,7 @@ export default function CartPage() {
 
   return (
     <section className="mx-auto max-w-content px-5 py-14 md:px-8">
-      <h1 className="font-display text-3xl text-ink">Your cart</h1>
+      <h1 className="font-display text-3xl text-ink">{dict.cartPage.title}</h1>
       <div className="pd-ruler pd-ruler--major my-6" aria-hidden="true" />
 
       <div className="flex flex-col gap-6">
@@ -51,7 +51,7 @@ export default function CartPage() {
             </div>
             <div className="flex items-center gap-2">
               <label className="sr-only" htmlFor={`qty-${item.productId}`}>
-                Quantity for {item.name}
+                {dict.cartPage.quantityFor} {item.name}
               </label>
               <input
                 id={`qty-${item.productId}`}
@@ -65,10 +65,10 @@ export default function CartPage() {
               />
               <button
                 onClick={() => removeItem(item.productId)}
-                aria-label={`Remove ${item.name}`}
+                aria-label={`${dict.cartPage.remove} ${item.name}`}
                 className="font-mono text-xs uppercase text-fog hover:text-signal"
               >
-                Remove
+                {dict.cartPage.remove}
               </button>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function CartPage() {
       <div className="pd-ruler pd-ruler--major my-8" aria-hidden="true" />
 
       <div className="flex items-center justify-between">
-        <span className="eyebrow">Subtotal</span>
+        <span className="eyebrow">{dict.cartPage.subtotal}</span>
         <span className="font-mono text-xl text-ink">
           {formatPrice(subtotalCents)}
         </span>
@@ -88,7 +88,7 @@ export default function CartPage() {
         href="/checkout"
         className="mt-6 block w-full border border-ink py-3 text-center font-body text-sm text-ink hover:bg-ink hover:text-paper md:inline-block md:w-auto md:px-10"
       >
-        Checkout
+        {dict.cartPage.checkout}
       </Link>
     </section>
   );
